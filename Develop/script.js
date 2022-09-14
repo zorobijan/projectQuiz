@@ -33,6 +33,8 @@ function displayQuestions(param1, data) {
     // go th rough your questiosn array
     for (let i = 0; i < questionsArray.length; i++) {
 
+        console.log(questionsArray[i].ansRight);
+
         let questionElement = document.createElement("h3");
         questionElement.textContent = questionsArray[i].question;
         document.body.appendChild(questionElement);
@@ -40,18 +42,37 @@ function displayQuestions(param1, data) {
         let answerRightElement = document.createElement("button");
         answerRightElement.textContent = questionsArray[i].ansRight;
         document.body.appendChild(answerRightElement);
-
-        let answerWrong1Element = document.createElement("button");
-        answerWrong1Element.textContent = questionsArray[i].ansWrong1;
+        answerRightElement.addEventListener("click", 
+            function(){
+                evaluateUserChoice(true);
+            }
+        );
+    
+        let answerWrong1Element = document.createElement("button");        answerWrong1Element.textContent = questionsArray[i].ansWrong1;
         document.body.appendChild(answerWrong1Element);
+        answerWrong1Element.addEventListener("click", 
+            function(){
+                evaluateUserChoice(false);
+            }
+        );
 
-        let answerWrong2Element = document.createElement("button");
-        answerWrong2Element.textContent = questionsArray[i].ansWrong2;
+        let answerWrong2Element = document.createElement("button");        answerWrong2Element.textContent = questionsArray[i].ansWrong2;
         document.body.appendChild(answerWrong2Element);
+        answerWrong2Element.addEventListener("click", 
+            function(){
+                evaluateUserChoice(false);
+            }
+        );
 
-        let answerWrong3Element = document.createElement("button");
-        answerWrong3Element.textContent = questionsArray[i].ansWrong3;
+        let answerWrong3Element = document.createElement("button");        answerWrong3Element.textContent = questionsArray[i].ansWrong3;
         document.body.appendChild(answerWrong3Element);
+        answerWrong3Element.addEventListener("click", 
+            function(){
+                evaluateUserChoice(false);
+            }
+        );
+
+        
 
 
 
@@ -62,33 +83,6 @@ function displayQuestions(param1, data) {
         // let answerText = document.createElement(p)
         // p.textContent = 
     }
-
-
-        
-       
-  
- 
-
-    // questionsArray.forEach(element => 
-    //     let btn = document.createElement("button")
-    //     btn.innerHTML = "Click me"
-    //     document.body.appendChild(btn)
-    // );
-
-
-        // tag.textContent = "This was made via prompts. It's a " + tagName + ".";
-        // let optionText = document.createElement(p)
-        // optionText.innerHTML = entry.ansRight;
-        // // Append the element to the parent element
-        // document.getElementById("parent").append(element);
-        // document.createElement("h3")
-        
-        // document.createElement(entry.ansRight)
-        // document.createElement(entry.ansWrong1)
-        // document.createElement(entry.ansWrong2)
-        // document.createElement(entry.ansWrong3)
-        // console.log(entry.question)
-;
     // one by one and fo rthe first question
     // you will create an h3 eelment and fill its text
     // with the first questions
@@ -99,10 +93,14 @@ function displayQuestions(param1, data) {
     // you 
 }
 
-function evaluateUserChoice (e) {
-    var clickedButtonValue = e.target.value;
-    // determine if the value is right or wrong here in this code
-    
+function evaluateUserChoice (fucker) {
+    let clickedButtonValue = fucker;
+    if (clickedButtonValue == true) {
+        console.log("Good job!");
+    } else {
+        console.log("Bad job!");
+        // TODO decrement the timer
+    }    
 }
 
 function beginTimer () {
