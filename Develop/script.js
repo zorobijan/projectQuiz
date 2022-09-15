@@ -34,68 +34,78 @@ let timeEl = document.querySelector(".time");
 
 function navigateToNextQuestion(questionNumber, wasPreviousAnswerCorrect) {
 
-        evaluateUserChoice(wasPreviousAnswerCorrect);
+    evaluateUserChoice(wasPreviousAnswerCorrect);
 
-    if (questionNumber < questionsArray.length) {
+    let questionElement = document.getElementById("question");
+    questionElement.textContent = questionsArray[questionNumber].question;
 
-        let questionElement = document.createElement("h3");
-        questionElement.textContent = questionsArray[questionNumber].question;
-        carousel.appendChild(questionElement);
-
-        let answerRightElement = document.createElement("button");
-        answerRightElement.textContent = questionsArray[questionNumber].ansRight;
-        carousel.appendChild(answerRightElement);
-        answerRightElement.addEventListener("click", 
-            function(event){
-                // Stops event from bubbling up and new window opening
-                event.stopPropagation();
-                if ((questionNumber + 1 < questionsArray.length)) {
-                    navigateToNextQuestion(questionNumber + 1, true);
-                }
+    let answerRightElement = document.getElementById("correctAns");
+    answerRightElement.textContent = questionsArray[questionNumber].ansRight;
+    answerRightElement.addEventListener("click", 
+        function(event){
+            // Stops event from bubbling up and new window opening
+            // event.stopPropagation();
+            if (questionNumber + 1 < questionsArray.length) {
+                navigateToNextQuestion(questionNumber + 1, true);
+            } 
+            else {
+                finishedTest();
             }
-        );
+            event.stopPropagation();
+        }
+    );
 
-        let answerWrong1Element = document.createElement("button");        
-        answerWrong1Element.textContent = questionsArray[questionNumber].ansWrong1;
-        carousel.appendChild(answerWrong1Element);
-        answerWrong1Element.addEventListener("click", 
-            function(event){
-                // Stops event from bubbling up and new window opening
-                event.stopPropagation();
-                if ((questionNumber + 1 < questionsArray.length)) {
-                    navigateToNextQuestion(questionNumber + 1, false);
-                }            
+    let answerWrong1Element = document.getElementById("wrongAns1");        
+    answerWrong1Element.textContent = questionsArray[questionNumber].ansWrong1;
+    answerWrong1Element.addEventListener("click", 
+        function(event){
+            // Stops event from bubbling up and new window opening
+            // event.stopPropagation();
+            if (questionNumber + 1 < questionsArray.length) {
+                navigateToNextQuestion(questionNumber + 1, false);
+            }  
+            else {
+                finishedTest();
+            }         
+            event.stopPropagation();
+        }
+    );
+
+    let answerWrong2Element = document.getElementById("wrongAns2");        answerWrong2Element.textContent = questionsArray[questionNumber].ansWrong2;
+    answerWrong2Element.addEventListener("click", 
+        function(event){
+            // Stops event from bubbling up and new window opening
+            // event.stopPropagation();
+            if (questionNumber + 1 < questionsArray.length) {
+                navigateToNextQuestion(questionNumber + 1, false);
+            }    
+            else {
+                finishedTest();
             }
-        );
+            event.stopPropagation();
+        }
+    );
 
-        let answerWrong2Element = document.createElement("button");        answerWrong2Element.textContent = questionsArray[questionNumber].ansWrong2;
-        carousel.appendChild(answerWrong2Element);
-        answerWrong2Element.addEventListener("click", 
-            function(event){
-                // Stops event from bubbling up and new window opening
-                event.stopPropagation();
-                if ((questionNumber + 1 < questionsArray.length)) {
-                    navigateToNextQuestion(questionNumber + 1, false);
-                }    
+    let answerWrong3Element = document.getElementById("wrongAns3");        answerWrong3Element.textContent = questionsArray[questionNumber].ansWrong3;
+    answerWrong3Element.addEventListener("click", 
+        function(event){
+            // Stops event from bubbling up and new window opening
+            // event.stopPropagation();
+            if (questionNumber + 1 < questionsArray.length) {
+                navigateToNextQuestion(questionNumber + 1, false);
+            } 
+            else {
+                finishedTest();
             }
-        );
-
-        let answerWrong3Element = document.createElement("button");        answerWrong3Element.textContent = questionsArray[questionNumber].ansWrong3;
-        carousel.appendChild(answerWrong3Element);
-        answerWrong3Element.addEventListener("click", 
-            function(event){
-                // Stops event from bubbling up and new window opening
-                event.stopPropagation();
-                if ((questionNumber + 1 < questionsArray.length)) {
-                    navigateToNextQuestion(questionNumber + 1, false);
-                }    
-            }
-        );
-
-        // evaluateUserChoice(wasPreviousAnswerCorrect);
-    }
+            event.stopPropagation();
+        }
+    );
 }
 
+function finishedTest() {
+    
+    window.alert ("Congratulations, you finished the test!");
+}
 
 function evaluateUserChoice(wasPreviousAnswerCorrect) {
 
@@ -113,7 +123,15 @@ function beginTimer () {
     var timerInterval = setInterval(function() {
         secondsLeft--;
         timeEl.textContent = secondsLeft
+        if(secondsLeft === 0) {
+            // Stops execution of action at set interval
+            clearInterval(timerInterval);
+            // Calls function to create and append image
+            sendMessage();
+            //when timer reaches zero, send to results page//
+          }
     }, 1000);
+    
     // do some stuff like 
     // start your timer; setInterval
     console.log('THe timer has started');
@@ -139,7 +157,32 @@ var questionsArray = [
 // create your event listeners here
 
 startBtn.addEventListener('click', function() {
-    // console.log('It works!');
+
+    let questionHeader = document.createElement("h3");
+    questionHeader.setAttribute("id", "question");
+    questionHeader.textContent = questionsArray[0].question;
+    carousel.appendChild(questionHeader);
+
+    let correctAnsBtn = document.createElement("button");
+    correctAnsBtn.setAttribute("id", "correctAns");    
+    correctAnsBtn.textContent = questionsArray[0].ansRight;
+    carousel.appendChild(correctAnsBtn);
+
+    let wrongAnsBtn1 = document.createElement("button");
+    wrongAnsBtn1.setAttribute("id", "wrongAns1");    
+    wrongAnsBtn1.textContent = questionsArray[0].ansWrong1;
+    carousel.appendChild(wrongAnsBtn1);
+
+    let wrongAnsBtn2 = document.createElement("button");
+    wrongAnsBtn2.setAttribute("id", "wrongAns2");
+    wrongAnsBtn2.textContent = questionsArray[0].ansWrong2;
+    carousel.appendChild(wrongAnsBtn2);
+
+    let wrongAnsBtn3 = document.createElement("button");
+    wrongAnsBtn3.setAttribute("id", "wrongAns3");    
+    wrongAnsBtn3.textContent = questionsArray[0].ansWrong3;
+    carousel.appendChild(wrongAnsBtn3);
+
     beginTimer();
     navigateToNextQuestion(0, true);
 });
