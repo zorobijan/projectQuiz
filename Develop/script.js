@@ -26,84 +26,94 @@ the screen.
 // so that you can attach an event listener to it
 
 // create your variables here
-var startBtn = document.getElementById('start-button');
-var mainContainer = document.getElementById('main-container');
+let startBtn = document.getElementById('start-button');
 
-function displayQuestions(param1, data) {
-    // go th rough your questiosn array
-    for (let i = 0; i < questionsArray.length; i++) {
+let carousel = document.querySelector(".carouselbox");
 
-        console.log(questionsArray[i].ansRight);
+let timeEl = document.querySelector(".time");
+
+function navigateToNextQuestion(questionNumber, wasPreviousAnswerCorrect) {
+
+        evaluateUserChoice(wasPreviousAnswerCorrect);
+
+    if (questionNumber < questionsArray.length) {
 
         let questionElement = document.createElement("h3");
-        questionElement.textContent = questionsArray[i].question;
-        document.body.appendChild(questionElement);
+        questionElement.textContent = questionsArray[questionNumber].question;
+        carousel.appendChild(questionElement);
 
         let answerRightElement = document.createElement("button");
-        answerRightElement.textContent = questionsArray[i].ansRight;
-        document.body.appendChild(answerRightElement);
+        answerRightElement.textContent = questionsArray[questionNumber].ansRight;
+        carousel.appendChild(answerRightElement);
         answerRightElement.addEventListener("click", 
-            function(){
-                evaluateUserChoice(true);
+            function(event){
+                // Stops event from bubbling up and new window opening
+                event.stopPropagation();
+                if ((questionNumber + 1 < questionsArray.length)) {
+                    navigateToNextQuestion(questionNumber + 1, true);
+                }
             }
         );
-    
-        let answerWrong1Element = document.createElement("button");        answerWrong1Element.textContent = questionsArray[i].ansWrong1;
-        document.body.appendChild(answerWrong1Element);
+
+        let answerWrong1Element = document.createElement("button");        
+        answerWrong1Element.textContent = questionsArray[questionNumber].ansWrong1;
+        carousel.appendChild(answerWrong1Element);
         answerWrong1Element.addEventListener("click", 
-            function(){
-                evaluateUserChoice(false);
+            function(event){
+                // Stops event from bubbling up and new window opening
+                event.stopPropagation();
+                if ((questionNumber + 1 < questionsArray.length)) {
+                    navigateToNextQuestion(questionNumber + 1, false);
+                }            
             }
         );
 
-        let answerWrong2Element = document.createElement("button");        answerWrong2Element.textContent = questionsArray[i].ansWrong2;
-        document.body.appendChild(answerWrong2Element);
+        let answerWrong2Element = document.createElement("button");        answerWrong2Element.textContent = questionsArray[questionNumber].ansWrong2;
+        carousel.appendChild(answerWrong2Element);
         answerWrong2Element.addEventListener("click", 
-            function(){
-                evaluateUserChoice(false);
+            function(event){
+                // Stops event from bubbling up and new window opening
+                event.stopPropagation();
+                if ((questionNumber + 1 < questionsArray.length)) {
+                    navigateToNextQuestion(questionNumber + 1, false);
+                }    
             }
         );
 
-        let answerWrong3Element = document.createElement("button");        answerWrong3Element.textContent = questionsArray[i].ansWrong3;
-        document.body.appendChild(answerWrong3Element);
+        let answerWrong3Element = document.createElement("button");        answerWrong3Element.textContent = questionsArray[questionNumber].ansWrong3;
+        carousel.appendChild(answerWrong3Element);
         answerWrong3Element.addEventListener("click", 
-            function(){
-                evaluateUserChoice(false);
+            function(event){
+                // Stops event from bubbling up and new window opening
+                event.stopPropagation();
+                if ((questionNumber + 1 < questionsArray.length)) {
+                    navigateToNextQuestion(questionNumber + 1, false);
+                }    
             }
         );
 
-        
-
-
-
-
-        // document.main.appendChild(questionText);
-        // console.log("success");
-        // h3.textContent = question
-        // let answerText = document.createElement(p)
-        // p.textContent = 
+        // evaluateUserChoice(wasPreviousAnswerCorrect);
     }
-    // one by one and fo rthe first question
-    // you will create an h3 eelment and fill its text
-    // with the first questions
-    // then you will create 4 buttons, with each button
-    // holding a choice. You will also attach event listeners
-    // to each button.
-
-    // you 
 }
 
-function evaluateUserChoice (fucker) {
-    let clickedButtonValue = fucker;
-    if (clickedButtonValue == true) {
+
+function evaluateUserChoice(wasPreviousAnswerCorrect) {
+
+    if (wasPreviousAnswerCorrect == true) {
         console.log("Good job!");
     } else {
         console.log("Bad job!");
-        // TODO decrement the timer
-    }    
+        secondsLeft = secondsLeft-5;
+    }   
 }
 
+var secondsLeft = 120;
+
 function beginTimer () {
+    var timerInterval = setInterval(function() {
+        secondsLeft--;
+        timeEl.textContent = secondsLeft
+    }, 1000);
     // do some stuff like 
     // start your timer; setInterval
     console.log('THe timer has started');
@@ -131,6 +141,6 @@ var questionsArray = [
 startBtn.addEventListener('click', function() {
     // console.log('It works!');
     beginTimer();
+    navigateToNextQuestion(0, true);
 });
 
-startBtn.addEventListener('click', displayQuestions)
