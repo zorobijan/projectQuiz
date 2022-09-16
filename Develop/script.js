@@ -32,7 +32,13 @@ let carousel = document.querySelector(".carouselbox");
 
 let timeEl = document.querySelector(".time");
 
+let score = 0;
+
 function navigateToNextQuestion(questionNumber, wasPreviousAnswerCorrect) {
+
+    if (secondsLeft < 0) {
+        timeEl.textContent = "";
+    }
 
     evaluateUserChoice(wasPreviousAnswerCorrect);
 
@@ -43,15 +49,14 @@ function navigateToNextQuestion(questionNumber, wasPreviousAnswerCorrect) {
     answerRightElement.textContent = questionsArray[questionNumber].ansRight;
     answerRightElement.addEventListener("click", 
         function(event){
-            // Stops event from bubbling up and new window opening
-            // event.stopPropagation();
             if (questionNumber + 1 < questionsArray.length) {
                 navigateToNextQuestion(questionNumber + 1, true);
+                score++;
             } 
             else {
-                finishedTest();
+                secondsLeft = 0;
+                showResults();
             }
-            event.stopPropagation();
         }
     );
 
@@ -59,52 +64,41 @@ function navigateToNextQuestion(questionNumber, wasPreviousAnswerCorrect) {
     answerWrong1Element.textContent = questionsArray[questionNumber].ansWrong1;
     answerWrong1Element.addEventListener("click", 
         function(event){
-            // Stops event from bubbling up and new window opening
-            // event.stopPropagation();
             if (questionNumber + 1 < questionsArray.length) {
                 navigateToNextQuestion(questionNumber + 1, false);
             }  
             else {
-                finishedTest();
+                secondsLeft = 0;
+                showResults();
             }         
-            event.stopPropagation();
         }
     );
 
     let answerWrong2Element = document.getElementById("wrongAns2");        answerWrong2Element.textContent = questionsArray[questionNumber].ansWrong2;
     answerWrong2Element.addEventListener("click", 
         function(event){
-            // Stops event from bubbling up and new window opening
-            // event.stopPropagation();
             if (questionNumber + 1 < questionsArray.length) {
                 navigateToNextQuestion(questionNumber + 1, false);
             }    
             else {
-                finishedTest();
+                secondsLeft = 0;
+                showResults();
             }
-            event.stopPropagation();
         }
     );
 
     let answerWrong3Element = document.getElementById("wrongAns3");        answerWrong3Element.textContent = questionsArray[questionNumber].ansWrong3;
     answerWrong3Element.addEventListener("click", 
         function(event){
-            // Stops event from bubbling up and new window opening
-            // event.stopPropagation();
             if (questionNumber + 1 < questionsArray.length) {
                 navigateToNextQuestion(questionNumber + 1, false);
             } 
             else {
-                finishedTest();
+                secondsLeft = 0;
+                showResults();
             }
-            event.stopPropagation();
         }
     );
-}
-
-function finishedTest() {
-    
-    window.alert ("Congratulations, you finished the test!");
 }
 
 function evaluateUserChoice(wasPreviousAnswerCorrect) {
@@ -122,19 +116,15 @@ var secondsLeft = 120;
 function beginTimer () {
     var timerInterval = setInterval(function() {
         secondsLeft--;
-        timeEl.textContent = secondsLeft
+        timeEl.textContent = secondsLeft + " seconds left to complete the quiz";
         if(secondsLeft === 0) {
             // Stops execution of action at set interval
             clearInterval(timerInterval);
-            // Calls function to create and append image
-            sendMessage();
-            //when timer reaches zero, send to results page//
-          }
+            showResults();
+        }
     }, 1000);
     
-    // do some stuff like 
-    // start your timer; setInterval
-    console.log('THe timer has started');
+    console.log('The timer has started');
 }
 
 var questionsArray = [
@@ -187,3 +177,47 @@ startBtn.addEventListener('click', function() {
     navigateToNextQuestion(0, true);
 });
 
+function showResults() {   
+    timeEl.textContent = "";
+    let resultsDiv = document.createElement("div");
+    let resultsHeader = document.createElement("h3");
+    resultsHeader.setAttribute("id", "resultsHeader");
+    resultsHeader.textContent = "All done!";
+    resultsDiv.appendChild(resultsHeader);
+
+    let resultsScore = document.createElement("p");
+    resultsScore.setAttribute("id", "resultsScore");
+    resultsScore.textContent = "Your final score is " + score + ".";
+    resultsDiv.appendChild(resultsScore);
+
+    let initials = document.createElement("input");
+    initials.setAttribute("id", "initials");
+    initials.setAttribute("placeholder", "Enter initials");
+    resultsDiv.appendChild(initials);
+
+    let submitBtn = document.createElement("button");
+    submitBtn.setAttribute("id", "submitBtn");
+    submitBtn.textContent = "Submit";
+    resultsDiv.appendChild(submitBtn);
+    submitBtn.addEventListener("click", 
+        function(event){
+            resultsHeader.textContent = "Highscores";
+            resultsScore.textContent = initials.value + " - " + score;
+            let goBackBtn = document.createElement("button");
+            goBackBtn.setAttribute("id", "goBackBtn");
+            goBackBtn.textContent = "Go Back";
+            resultsDiv.replaceChild(goBackBtn, initials);
+            submitBtn.textContent = "Clear Highscores";
+            
+        }
+    );
+
+    document.getElementById("main-container").replaceChild(resultsDiv, carousel);
+
+    
+    // window.alert("You scored a " + score +"/"+ questionsArray.length);
+    // results are based off number of questions answered correct out of total questions
+}
+
+// {/* <h2 class="card-title">Recipe Information</h2>
+// // <p class="card-text"><input placeholder="Type here" /></p> */}
