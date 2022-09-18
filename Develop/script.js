@@ -1,31 +1,3 @@
-// HTML PAGE
-
-/*
-We'll want a body element. Inside body we'll have 
-a header, main, and footer element. Dynamic HTML 
-creation will take place in main element. Inside main
-you'll have a start button.
-*/
-
-// JAVASCRIPT
-/*
-Attach an event listener to the start button. 
-That listener's callback function will start the timer.
-The timer will be created with the setInterval function. THe timer
-will show in the header element
-
-I will store my quiz questions and answers as an object 
-inside an array. I will attach another event listener to the start button;
-[ startBtn.addEventListener('click', displayQuestions) this callback
-will cycle through the question objects and display the question and choices to
-the screen. 
-
-*/
-
-// Create JavaScript references to HTML elements, i.e. the start button
-// so that you can attach an event listener to it
-
-// create your variables here
 let startBtn = document.getElementById('start-button');
 
 let carousel = document.querySelector(".carouselbox");
@@ -74,7 +46,8 @@ function navigateToNextQuestion(questionNumber, wasPreviousAnswerCorrect) {
         }
     );
 
-    let answerWrong2Element = document.getElementById("wrongAns2");        answerWrong2Element.textContent = questionsArray[questionNumber].ansWrong2;
+    let answerWrong2Element = document.getElementById("wrongAns2");        
+    answerWrong2Element.textContent = questionsArray[questionNumber].ansWrong2;
     answerWrong2Element.addEventListener("click", 
         function(event){
             if (questionNumber + 1 < questionsArray.length) {
@@ -127,20 +100,41 @@ function beginTimer () {
     console.log('The timer has started');
 }
 
-var questionsArray = [
+let questionsArray = [cd
     {
-        question: "What day is today?",
-        ansRight: "Wednesday",
-        ansWrong1: "Sunday",
-        ansWrong2: "Monday",
-        ansWrong3: "Tuesday"
+        question: "What year was the Constitution written",
+        ansRight: "1776",
+        ansWrong1: "1787",
+        ansWrong2: "1788",
+        ansWrong3: "1812"
     },
     {
-        question: "What day is tomorrow?",
-        ansRight: "Thursday",
-        ansWrong1: "Wednesday",
-        ansWrong2: "Monday",
-        ansWrong3: "Tuesday"
+        question: "Why did the British lose?",
+        ansWrong1: "They were bored.",
+        ansRight: "The Americans had better kung-fu.",
+        ansWrong2: "Democracy.",
+        ansWrong3: "They didn't lose, they were just taking a breather.",
+    },
+    {
+        question: "What legal principle was established by the Supreme Court's decision in Marbury v. Madison?",
+        ansWrong1: "presumption of innocence",
+        ansWrong2: "the right to a lawyer",
+        ansRight: "judicial review",
+        ansWrong3: "*eagle shriek"
+    },
+    {
+        question: "Who was the 3rd president of the United States?",
+        ansRight: "Thomas Jefferson",
+        ansWrong1: "James Madison",
+        ansWrong2: "George Washington",
+        ansWrong3: "Uncle Sam",
+    },
+    {
+        question: "What year did the United States go to the Moon?",
+        ansWrong1: "1969",
+        ansWrong2: "1972",
+        ansWrong3: "2001: A Space Odyssey",
+        ansRight: "Who says they did? I want answers!",
     },
 ]
 
@@ -213,11 +207,4 @@ function showResults() {
     );
 
     document.getElementById("main-container").replaceChild(resultsDiv, carousel);
-
-    
-    // window.alert("You scored a " + score +"/"+ questionsArray.length);
-    // results are based off number of questions answered correct out of total questions
 }
-
-// {/* <h2 class="card-title">Recipe Information</h2>
-// // <p class="card-text"><input placeholder="Type here" /></p> */}
