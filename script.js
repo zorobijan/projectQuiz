@@ -100,7 +100,7 @@ function beginTimer () {
     console.log('The timer has started');
 }
 
-let questionsArray = [cd
+let questionsArray = [
     {
         question: "What year was the Constitution written",
         ansRight: "1776",
